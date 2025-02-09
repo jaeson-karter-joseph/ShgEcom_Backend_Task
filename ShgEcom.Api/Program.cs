@@ -1,8 +1,9 @@
 using ShgEcom.Api;
+using ShgEcom.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddPresentation();
+    builder.Services.AddPresentation().AddApplication();
 }
 
 var app = builder.Build();
