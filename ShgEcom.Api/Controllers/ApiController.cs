@@ -32,10 +32,10 @@ namespace ShgEcom.Api.Controllers
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
                 ErrorType.Validation => StatusCodes.Status400BadRequest,
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
-                ErrorType.Failure => throw new NotImplementedException(),
-                ErrorType.Unexpected => throw new NotImplementedException(),
-                ErrorType.Unauthorized => throw new NotImplementedException(),
-                ErrorType.Forbidden => throw new NotImplementedException(),
+                ErrorType.Failure => StatusCodes.Status400BadRequest,
+                ErrorType.Unexpected => StatusCodes.Status500InternalServerError,
+                ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+                ErrorType.Forbidden =>  StatusCodes.Status403Forbidden,
                 _ => StatusCodes.Status500InternalServerError,
             };
             return Problem(statusCode: statusCode, title: error.Description);
