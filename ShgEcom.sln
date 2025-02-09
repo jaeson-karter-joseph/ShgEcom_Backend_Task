@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShgEcom.Api", "ShgEcom.Api\ShgEcom.Api.csproj", "{3DCB2B93-C1D3-49E5-9E90-D4A64E729D72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShgEcom.Appilcation", "ShgEcom.Appilcation\ShgEcom.Appilcation.csproj", "{18E64DF5-D797-4F87-B419-93F834840341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShgEcom.Application", "ShgEcom.Appilcation\ShgEcom.Application.csproj", "{18E64DF5-D797-4F87-B419-93F834840341}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShgEcom.Contracts", "ShgEcom.Contracts\ShgEcom.Contracts.csproj", "{4B8E4DA4-6E1E-4661-A461-B2D8A956033A}"
 EndProject

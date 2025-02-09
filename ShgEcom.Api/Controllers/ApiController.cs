@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -35,7 +34,7 @@ namespace ShgEcom.Api.Controllers
                 ErrorType.Failure => StatusCodes.Status400BadRequest,
                 ErrorType.Unexpected => StatusCodes.Status500InternalServerError,
                 ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
-                ErrorType.Forbidden =>  StatusCodes.Status403Forbidden,
+                ErrorType.Forbidden => StatusCodes.Status403Forbidden,
                 _ => StatusCodes.Status500InternalServerError,
             };
             return Problem(statusCode: statusCode, title: error.Description);
