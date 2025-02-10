@@ -9,6 +9,7 @@ using ShgEcom.Application.Products.Commands.Update;
 using ShgEcom.Application.Products.Common;
 using ShgEcom.Application.Products.Queries.AllProducts;
 using ShgEcom.Application.Products.Queries.ReadProduct;
+using ShgEcom.Application.Products.Queries.ReadProductByTag;
 using ShgEcom.Contracts.Products;
 
 namespace ShgEcom.Api.Controllers
@@ -56,5 +57,12 @@ namespace ShgEcom.Api.Controllers
             return result.Match(_ => Ok(new { Message = $"Product deleted successfully with ID {id}!" }), Problem);
         }
 
+        [HttpPost("getAllBytags")]
+        public async Task<IActionResult> GetProductsByTag(GetProductByTag tag)
+        {
+            var query = _mapper.Map<GetProductsByTagQuery>(tag);
+            var result = await mediator.Send(query);
+            return result.Match(Ok, Problem);
+        }
     }
 }

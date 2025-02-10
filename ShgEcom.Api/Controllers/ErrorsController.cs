@@ -14,7 +14,7 @@ namespace ShgEcom.Api.Controllers
             var (statusCode, message) = exception switch
             {
                 IServiceException serviceException => ((int)serviceException.StatusCode, serviceException.ErrorMessage),
-                _ => (StatusCodes.Status500InternalServerError, "An Unexpected Error Occured")
+                _ => (StatusCodes.Status500InternalServerError, exception?.Message)
             };
             return Problem(title: message, statusCode: statusCode);
         }

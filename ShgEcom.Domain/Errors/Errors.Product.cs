@@ -28,6 +28,10 @@ namespace ShgEcom.Domain.Errors
             public static Error OutOfStock => Error.Conflict(
                 code: "Product.OutOfStock",
                 description: "Product is currently out of stock.");
+            public static Error ProductNotFoundWithTag => Error.NotFound(
+                code: "Product.NotFound",
+                description: "No products found with the specified tag."
+            );
         }
 
         public static class Order
