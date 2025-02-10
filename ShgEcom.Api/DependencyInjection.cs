@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using ShgEcom.Api.Common.Mapping;
 
 namespace ShgEcom.Api
@@ -39,6 +41,24 @@ namespace ShgEcom.Api
                         Array.Empty<string>()
                     }
                 });
+            });
+            services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        // Prevent default challenge response
+                        context.HandleResponse();
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        var response = new { message = "Unauthorized Access, Please Enter Valid Token" };
+                        var json = JsonConvert.SerializeObject(response);
+
+                        await context.Response.WriteAsync(json);
+                    }
+                };
             });
             return services;
         }
