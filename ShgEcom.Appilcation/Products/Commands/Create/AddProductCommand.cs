@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using ShgEcom.Application.Products.Commands.Common;
+using ShgEcom.Application.Products.Common;
 
 namespace ShgEcom.Application.Products.Commands.Create
 {

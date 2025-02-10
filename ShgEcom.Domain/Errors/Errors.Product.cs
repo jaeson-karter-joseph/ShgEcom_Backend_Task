@@ -6,6 +6,13 @@ namespace ShgEcom.Domain.Errors
     {
         public static class Product
         {
+            public static Error NoProductsFound => Error.NotFound(
+                code: "Product.NoProductsFound",
+                description: "No products found in the inventory.");
+            public static Error ProductNotFound => Error.NotFound(
+                code: "Product.NotFound",
+                description: "The requested product does not exist.");
+
             public static Error InvalidName => Error.Validation(
                 code: "Product.InvalidName",
                 description: "Product name must be between 1 and 100 characters.");

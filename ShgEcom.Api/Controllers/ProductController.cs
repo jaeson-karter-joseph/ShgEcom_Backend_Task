@@ -1,10 +1,14 @@
 ﻿using ErrorOr;
+using Mapster;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShgEcom.Application.Products.Commands.Common;
 using ShgEcom.Application.Products.Commands.Create;
+using ShgEcom.Application.Products.Commands.Update;
+using ShgEcom.Application.Products.Common;
+using ShgEcom.Application.Products.Queries.AllProducts;
+using ShgEcom.Application.Products.Queries.ReadProduct;
 using ShgEcom.Contracts.Products;
 
 namespace ShgEcom.Api.Controllers
@@ -20,5 +24,29 @@ namespace ShgEcom.Api.Controllers
             ErrorOr<ProductResult> result = await mediator.Send(command);
             return result.Match(result => Ok(_mapper.Map<ProductResult>(result)), Problem);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(Guid id)
+        {
+            var query = _mapper.Map<GetProductByIdQuery>(id);
+            ErrorOr<ProductResult> result = await mediator.Send(query);
+            return result.Match(result => Ok(_mapper.Map<ProductResult>(result)), Problem);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var result = await mediator.Send(new GetAllProductsQuery());
+            return result.Match(result => Ok(_mapper.Map<List<ProductResult>>(result)), Problem);
+        }
+
+        [HttpPut("updateProduct")]
+        public async Task<IActionResult> UpdateProduct(UpdateProductRequest request)
+        {
+            var command = _mapper.Map<UpdateProductCommand>(request);
+            var result = await mediator.Send(command);
+            return result.Match(result => Ok(_mapper.Map<ProductResult>(result)), Problem);
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 using ShgEcom.Application.Common.Interfaces.Persistence;
-using ShgEcom.Application.Products.Commands.Common;
+using ShgEcom.Application.Products.Common;
 using ShgEcom.Domain.Entites;
 
 namespace ShgEcom.Application.Products.Commands.Create

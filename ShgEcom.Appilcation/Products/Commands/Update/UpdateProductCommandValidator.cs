@@ -1,11 +1,20 @@
 ﻿using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ShgEcom.Application.Products.Commands.Create
+namespace ShgEcom.Application.Products.Commands.Update
 {
-    public class GetProuctByIdValidator : AbstractValidator<AddProductCommand>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
-        public GetProuctByIdValidator()
+        public UpdateProductCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty().WithMessage("Product Id is required") // Ensure the Guid is not empty
+                .Must(id => id != Guid.Empty).WithMessage("Product Id cannot be an empty GUID");
+
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required")
                 .Length(1, 100).WithMessage("Name must be between 1 and 100 characters");
@@ -22,8 +31,9 @@ namespace ShgEcom.Application.Products.Commands.Create
                 .LessThanOrEqualTo(10000).WithMessage("Stock quantity cannot exceed 10000");
 
             RuleFor(x => x.Tags)
-                .Must(list => list.Count <= 10).WithMessage("Maximum 10 tags allowed")
-                .Must(list => list.All(tag => tag.Length <= 50)).WithMessage("Each tag must be 50 characters or less");
+               .Must(list => list.Count <= 10).WithMessage("Maximum 10 tags allowed")
+               .Must(list => list.All(tag => tag.Length <= 50)).WithMessage("Each tag must be 50 characters or less");
         }
     }
+
 }
