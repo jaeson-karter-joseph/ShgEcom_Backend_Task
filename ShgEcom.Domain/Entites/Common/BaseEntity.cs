@@ -9,13 +9,13 @@ namespace ShgEcom.Domain.Entites.Common
         [BsonRepresentation(BsonType.String)]
         public Guid Id { get; set; }
 
-        [BsonElement("created_at")] 
+        [BsonElement("created_at")]
         public DateTime CreatedAt { get; set; }
 
-        [BsonElement("updated_at")] 
+        [BsonElement("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        [BsonElement("is_deleted")]  
+        [BsonElement("is_deleted")]
         public bool IsDeleted { get; set; }
 
         // Constructor for setting default values

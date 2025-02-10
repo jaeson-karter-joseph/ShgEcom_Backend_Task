@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using ShgEcom.Application.Common.Interfaces.Persistence;
 using ShgEcom.Domain.Entites;
 using ShgEcom.Infrastructure.Persistence.DbContext;
