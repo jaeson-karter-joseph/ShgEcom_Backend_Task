@@ -8,6 +8,7 @@ using ShgEcom.Application.Common.Interfaces.Persistence;
 using ShgEcom.Application.Common.Interfaces.Services;
 using ShgEcom.Infrastructure.Authentication;
 using ShgEcom.Infrastructure.Persistence;
+using ShgEcom.Infrastructure.Persistence.DbContext;
 using ShgEcom.Infrastructure.Services;
 using System.Text;
 
@@ -19,6 +20,7 @@ namespace ShgEcom.Infrastructure
         {
 
             services.AddAuth(configuration);
+            services.AddDbContext(configuration);
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<IUserRespository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -44,6 +46,13 @@ namespace ShgEcom.Infrastructure
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddDbContext(this IServiceCollection services, ConfigurationManager configuration)
+        {
+            services.Configure<MongoDbSettings>(configuration.GetSection(MongoDbSettings.SectionName));
+            services.AddSingleton<MongoDbContext>();
             return services;
         }
     }

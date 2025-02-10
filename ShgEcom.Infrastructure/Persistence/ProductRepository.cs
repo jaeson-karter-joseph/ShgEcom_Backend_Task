@@ -1,25 +1,33 @@
-﻿using ShgEcom.Application.Common.Interfaces.Persistence;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using ShgEcom.Application.Common.Interfaces.Persistence;
 using ShgEcom.Domain.Entites;
+using ShgEcom.Infrastructure.Persistence.DbContext;
 
 namespace ShgEcom.Infrastructure.Persistence
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository(MongoDbContext context) : IProductRepository
     {
         private static readonly List<Product> _products = [];
 
-        public Task<Product?> GetByIdAsync(Guid id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
-            return Task.FromResult(_products.SingleOrDefault(p => p.Id == id && !p.IsDeleted));
+            var product = await context.Products.Find(p => p.Id == id && !p.IsDeleted).FirstOrDefaultAsync();
+            //return Task.FromResult(_products.SingleOrDefault(p => p.Id == id && !p.IsDeleted));
+            return product;
         }
 
-        public Task<List<Product>> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return Task.FromResult(_products.Where(p => !p.IsDeleted).ToList());
+            return await context.Products.Find(p => !p.IsDeleted).ToListAsync();
+            //return Task.FromResult(_products.Where(p => !p.IsDeleted).ToList());
         }
 
-        public Task<List<Product>> GetActiveProductsAsync()
+        public async Task<List<Product>> GetActiveProductsAsync()
         {
-            return Task.FromResult(_products.Where(p => !p.IsDeleted && p.StockQuantity > 0).ToList());
+            var products = await context.Products.Find(p => !p.IsDeleted && p.StockQuantity > 0).ToListAsync();
+            return products;
+            //return Task.FromResult(_products.Where(p => !p.IsDeleted && p.StockQuantity > 0).ToList());
         }
 
         public Task<Product?> GetByNameAsync(string name)
@@ -30,10 +38,11 @@ namespace ShgEcom.Infrastructure.Persistence
         public Task AddAsync(Product product)
         {
             _products.Add(product);
+            context.Products.InsertOneAsync(product);
             return Task.CompletedTask;
         }
 
-        public Task UpdateAsync(Product product)
+        public async Task UpdateAsync(Product product)
         {
             var existingProduct = _products.FirstOrDefault(p => p.Id == product.Id);
             if (existingProduct != null)
@@ -41,14 +50,27 @@ namespace ShgEcom.Infrastructure.Persistence
                 _products.Remove(existingProduct);
                 _products.Add(product);
             }
-            return Task.CompletedTask;
+            var filter = Builders<Product>.Filter.Eq(p => p.Id, product.Id);
+            var update = Builders<Product>.Update
+              .Set(p => p.Name, product.Name)
+              .Set(p => p.Description, product.Description)
+              .Set(p => p.Price, product.Price)
+              .Set(p => p.StockQuantity, product.StockQuantity)
+              .Set(p => p.Status, product.Status)
+              .Set(p => p.Tags, product.Tags)
+              .Set(p => p.UpdatedAt, DateTime.UtcNow);
+
+            await context.Products.UpdateOneAsync(filter, update);
+            //return Task.CompletedTask;
         }
 
-        public Task SoftDeleteAsync(Guid id)
+        public async Task SoftDeleteAsync(Guid id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            product?.SoftDelete();
-            return Task.CompletedTask;
+            var filter = Builders<Product>.Filter.Eq(p => p.Id, id);
+            var update = Builders<Product>.Update
+              .Set(p => p.IsDeleted, true)
+              .Set(p => p.UpdatedAt, DateTime.UtcNow);
+            await context.Products.UpdateOneAsync(filter, update);
         }
 
         public Task<bool> ExistsAsync(Guid id)
@@ -56,11 +78,10 @@ namespace ShgEcom.Infrastructure.Persistence
             return Task.FromResult(_products.Any(p => p.Id == id && !p.IsDeleted));
         }
 
-        public Task<List<Product>> GetProductsByTagAsync(string tag)
+        public async Task<List<Product>> GetProductsByTagAsync(string tag)
         {
-            return Task.FromResult(_products
-                .Where(p => p.Tags.Contains(tag) && !p.IsDeleted)
-                .ToList());
+            var products = await context.Products.Find(p => p.Tags.Contains(tag) && !p.IsDeleted).ToListAsync();
+            return products;
         }
 
         public Task<List<Product>> GetOutOfStockProductsAsync()
