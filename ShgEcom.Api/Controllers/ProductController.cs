@@ -1,10 +1,10 @@
 ﻿using ErrorOr;
-using Mapster;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShgEcom.Application.Products.Commands.Create;
+using ShgEcom.Application.Products.Commands.Delete;
 using ShgEcom.Application.Products.Commands.Update;
 using ShgEcom.Application.Products.Common;
 using ShgEcom.Application.Products.Queries.AllProducts;
@@ -46,6 +46,14 @@ namespace ShgEcom.Api.Controllers
             var command = _mapper.Map<UpdateProductCommand>(request);
             var result = await mediator.Send(command);
             return result.Match(result => Ok(_mapper.Map<ProductResult>(result)), Problem);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var command = _mapper.Map<DeleteProductCommand>(id);
+            var result = await mediator.Send(command);
+            return result.Match(_ => Ok(new { Message = $"Product deleted successfully with ID {id}!" }), Problem);
         }
 
     }

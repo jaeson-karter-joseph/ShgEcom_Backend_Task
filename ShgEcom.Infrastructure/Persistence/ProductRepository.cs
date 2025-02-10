@@ -47,10 +47,7 @@ namespace ShgEcom.Infrastructure.Persistence
         public Task SoftDeleteAsync(Guid id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product != null)
-            {
-                product.SoftDelete();
-            }
+            product?.SoftDelete();
             return Task.CompletedTask;
         }
 

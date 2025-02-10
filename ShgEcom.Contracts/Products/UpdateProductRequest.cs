@@ -1,19 +1,14 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ShgEcom.Contracts.Products
 {
     public record UpdateProductRequest
     {
         [JsonPropertyName("id")]
-        [Required(ErrorMessage = "Product Id is required")] 
+        [Required(ErrorMessage = "Product Id is required")]
         [SwaggerSchema(Description = "Product identifier, a unique GUID")]
         public Guid Id { get; set; }
 
@@ -42,7 +37,7 @@ namespace ShgEcom.Contracts.Products
         [JsonPropertyName("stockQuantity")]
         [DefaultValue(100)]
         [SwaggerSchema(Description = "Available stock quantity")]
-        public int StockQuantity { get; set; } 
+        public int StockQuantity { get; set; }
 
         [JsonPropertyName("tags")]
         [DefaultValue(new[] { "default" })]
