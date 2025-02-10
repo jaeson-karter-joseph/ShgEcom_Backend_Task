@@ -1,4 +1,5 @@
 using ShgEcom.Api;
+using ShgEcom.Api.Middlerware;
 using ShgEcom.Application;
 using ShgEcom.Infrastructure;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.UseMiddleware<RequestResponseLoggingMiddleware>();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {

@@ -9,6 +9,11 @@ namespace ShgEcom.Api
     {
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
+            var logFilePath = "logs/api_logs.txt";
+            if (File.Exists(logFilePath))
+            {
+                File.WriteAllText(logFilePath, string.Empty); // Clear file content
+            }
             services.AddControllers();
             services.AddMappings();
             services.AddEndpointsApiExplorer();
