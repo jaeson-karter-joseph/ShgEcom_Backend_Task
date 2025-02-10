@@ -24,7 +24,7 @@ namespace ShgEcom.Api
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Enter 'Bearer {token}' (without quotes) in the field below.\nExample: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    Description = "Enter 'Token' (without quotes) in the field below.\nExample: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement

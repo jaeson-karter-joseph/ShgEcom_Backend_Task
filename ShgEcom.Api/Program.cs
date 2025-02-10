@@ -20,7 +20,7 @@ var app = builder.Build();
     }
 
     app.UseExceptionHandler("/error");
-
+    app.UseStaticFiles();
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseHttpsRedirection();

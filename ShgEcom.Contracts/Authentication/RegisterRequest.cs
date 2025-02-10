@@ -1,4 +1,25 @@
-﻿namespace ShgEcom.Contracts.Authentication
+﻿using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel;
+using System.Text.Json.Serialization;
+
+namespace ShgEcom.Contracts.Authentication
 {
-    public record RegisterRequest(string FirstName, string LastName, string Email, string Password);
+    public class RegisterRequest
+    {
+        [JsonPropertyName("firstName")]
+        [DefaultValue("Jaeson")]
+        public string FirstName { get; set; } = null!;
+
+        [JsonPropertyName("lastName")]
+        [DefaultValue("Joseph")]
+        public string LastName { get; set; } = null!;
+
+        [JsonPropertyName("email")]
+        [DefaultValue("jkjoseph2023@gmail.com")]
+        public string Email { get; set; } = null!;
+
+        [JsonPropertyName("password")]
+        [DefaultValue("SecurePassword123!")]
+        public string Password { get; set; } = null!;
+    }
 }
