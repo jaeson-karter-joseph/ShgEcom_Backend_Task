@@ -21,6 +21,7 @@ namespace ShgEcom.Infrastructure
             services.AddAuth(configuration);
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<IUserRespository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
 

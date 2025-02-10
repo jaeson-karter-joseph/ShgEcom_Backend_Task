@@ -2,9 +2,10 @@
 {
     public abstract record BaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
         public bool IsDeleted { get; set; }
 
         protected BaseEntity()
