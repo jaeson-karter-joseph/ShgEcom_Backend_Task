@@ -1,9 +1,10 @@
 using ShgEcom.Api;
 using ShgEcom.Application;
+using ShgEcom.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Services.AddPresentation().AddApplication();
+    builder.Services.AddPresentation().AddApplication().AddInfrastructure(builder.Configuration);
 }
 
 var app = builder.Build();
@@ -12,7 +13,10 @@ var app = builder.Build();
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShgEcom API v1");
+        });
     }
 
     app.UseAuthentication();
