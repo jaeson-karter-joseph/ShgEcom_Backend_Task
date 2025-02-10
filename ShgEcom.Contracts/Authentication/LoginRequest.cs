@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ShgEcom.Contracts.Authentication
 {
-    public class LoginRequest
+    public record LoginRequest
     {
         [JsonPropertyName("email")]
         [DefaultValue("jkjoseph2023@gmail.com")]

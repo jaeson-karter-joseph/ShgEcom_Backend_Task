@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ShgEcom.Domain.Entites;
 
 namespace ShgEcom.Api.Controllers
 {

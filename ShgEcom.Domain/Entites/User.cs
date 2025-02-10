@@ -1,6 +1,6 @@
 ﻿namespace ShgEcom.Domain.Entites
 {
-    public record User
+    public record User 
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string FirstName { get; set; } = null!;

@@ -1,4 +1,4 @@
-namespace ShgEcom.Api
+namespace ShgEcom.Domain.Entites
 {
     public class WeatherForecast
     {

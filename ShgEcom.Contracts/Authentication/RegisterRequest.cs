@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ShgEcom.Contracts.Authentication
 {
-    public class RegisterRequest
+    public record RegisterRequest
     {
         [JsonPropertyName("firstName")]
         [DefaultValue("Jaeson")]
