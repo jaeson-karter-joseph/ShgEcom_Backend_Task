@@ -10,6 +10,7 @@ namespace ShgEcom.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddMemoryCache();
             services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
