@@ -53,7 +53,7 @@ namespace ShgEcom.Api
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         context.Response.ContentType = "application/json";
 
-                        var response = new { message = "Unauthorized Access, Please Enter Valid Token" };
+                        var response = new { message = "Unauthorized Access, Please Enter Valid Token by Using Register/Login API" };
                         var json = JsonConvert.SerializeObject(response);
 
                         await context.Response.WriteAsync(json);

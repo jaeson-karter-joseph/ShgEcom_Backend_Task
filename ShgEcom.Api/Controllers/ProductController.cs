@@ -15,7 +15,6 @@ using ShgEcom.Contracts.Products;
 namespace ShgEcom.Api.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
     public class ProductController(ISender mediator, IMapper _mapper) : ApiController
     {
         [HttpPost("createProduct")]

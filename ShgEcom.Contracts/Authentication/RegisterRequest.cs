@@ -14,7 +14,7 @@ namespace ShgEcom.Contracts.Authentication
         public string LastName { get; set; } = null!;
 
         [JsonPropertyName("email")]
-        [DefaultValue("jkjoseph2023@gmail.com")]
+        [DefaultValue("example.user@gmail.com")]
         public string Email { get; set; } = null!;
 
         [JsonPropertyName("password")]
