@@ -1,6 +1,7 @@
 using ShgEcom.Api;
 using ShgEcom.Api.Middlerware;
 using ShgEcom.Application;
+using ShgEcom.Application.SignalR;
 using ShgEcom.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,9 +19,11 @@ var app = builder.Build();
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShgEcom API v1");
+            c.InjectJavascript("/swagger-ui/signalr-client.js");
         });
     }
 
+    app.MapHub<NotificationHub>("/notificationHub");
     app.UseExceptionHandler("/error");
     app.UseStaticFiles();
     app.UseAuthentication();

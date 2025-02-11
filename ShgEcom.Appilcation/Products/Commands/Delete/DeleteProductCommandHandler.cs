@@ -1,12 +1,14 @@
 ﻿using ErrorOr;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 using ShgEcom.Application.Common.Constants;
 using ShgEcom.Application.Common.Interfaces.Persistence;
+using ShgEcom.Application.SignalR;
 
 namespace ShgEcom.Application.Products.Commands.Delete
 {
-    public class DeleteProductCommandHandler(IProductRepository productRepository, IMemoryCache memoryCache) : IRequestHandler<DeleteProductCommand, ErrorOr<bool>>
+    public class DeleteProductCommandHandler(IProductRepository productRepository, IMemoryCache memoryCache, IHubContext<NotificationHub> notificationHubContext) : IRequestHandler<DeleteProductCommand, ErrorOr<bool>>
     {
         private readonly IProductRepository _productRepository = productRepository;
 
@@ -22,7 +24,7 @@ namespace ShgEcom.Application.Products.Commands.Delete
 
             // Attempt to delete the product
             await _productRepository.SoftDeleteAsync(request.Id);
-
+            await notificationHubContext.Clients.All.SendAsync("ProductDeleted", $"❌ Product deleted: {product.Name}", cancellationToken: cancellationToken);
             return true; // Return true if deletion is successful
         }
     }

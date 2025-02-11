@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShgEcom.Application.Products.Commands.Create;
 using ShgEcom.Application.Products.Commands.Delete;
