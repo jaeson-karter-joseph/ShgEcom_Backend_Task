@@ -23,6 +23,7 @@ var app = builder.Build();
         });
     }
 
+    app.UseRateLimiter();
     app.MapHub<NotificationHub>("/notificationHub");
     app.UseExceptionHandler("/error");
     app.UseStaticFiles();

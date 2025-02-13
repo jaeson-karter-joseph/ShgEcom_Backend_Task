@@ -6,7 +6,7 @@ namespace ShgEcom.Application.SignalR
     {
         public async Task SendNotification(string eventType, string message)
         {
-            await Clients.All.SendAsync(eventType,message);
+            await Clients.All.SendAsync(eventType, message);
         }
     }
 }

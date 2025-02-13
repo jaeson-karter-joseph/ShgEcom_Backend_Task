@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -11,6 +13,7 @@ using ShgEcom.Infrastructure.Persistence;
 using ShgEcom.Infrastructure.Persistence.DbContext;
 using ShgEcom.Infrastructure.Services;
 using System.Text;
+using System.Threading.RateLimiting;
 
 namespace ShgEcom.Infrastructure
 {
@@ -18,7 +21,7 @@ namespace ShgEcom.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
-
+            services.AddRateLimit();
             services.AddAuth(configuration);
             services.AddDbContext(configuration);
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
@@ -26,7 +29,6 @@ namespace ShgEcom.Infrastructure
             services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
-
         public static IServiceCollection AddAuth(this IServiceCollection services, ConfigurationManager configuration)
         {
             var jwtSettings = new JwtSettings();
@@ -53,6 +55,41 @@ namespace ShgEcom.Infrastructure
         {
             services.Configure<MongoDbSettings>(configuration.GetSection(MongoDbSettings.SectionName));
             services.AddSingleton<MongoDbContext>();
+            return services;
+        }
+
+        public static IServiceCollection AddRateLimit(this IServiceCollection services)
+        {
+            services.AddRateLimiter(options =>
+            {
+                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context => RateLimitPartition.GetFixedWindowLimiter(
+                        partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                        factory: _ => new FixedWindowRateLimiterOptions
+                        {
+                            PermitLimit = 5,
+                            Window = TimeSpan.FromSeconds(10),
+                            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                            QueueLimit = 0
+                        }
+                 ));
+
+                options.OnRejected = async (context, token) =>
+                {
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                    context.HttpContext.Response.ContentType = "application/json";
+
+                    var problemDetails = new
+                    {
+                        Status = StatusCodes.Status429TooManyRequests,
+                        Type = "https://httpstatuses.com/429",
+                        Title = "Rate Limit Exceeded",
+                        Detail = "You have sent too many requests in a short period. Please try again later.",
+                        Instance = context.HttpContext.Request.Path
+                    };
+
+                    await context.HttpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: token);
+                };
+            });
             return services;
         }
     }
